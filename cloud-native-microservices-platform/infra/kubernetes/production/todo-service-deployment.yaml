@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-service
+  labels:
+    app: todo-service
+spec:
+  replicas: 3  # Adjust replica count based on your production needs
+  selector:
+    matchLabels:
+      app: todo-service
+  template:
+    metadata:
+      labels:
+        app: todo-service
+    spec:
+      containers:
+      - name: todo-service
+        image: yourusername/todo-service:latest
+        ports:
+        - containerPort: 8080
+        resources:  # Define resource requests and limits
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "500m"
+            memory: "500Mi"
+        livenessProbe:  # Liveness probe (customize as needed)
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          timeoutSeconds: 2
+        readinessProbe:  # Readiness probe (customize as needed)
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2

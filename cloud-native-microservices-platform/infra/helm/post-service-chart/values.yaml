@@ -1,0 +1,13 @@
+# Default values for post-service.
+replicaCount: 1
+
+image:
+  repository: yourusername/post-service
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+

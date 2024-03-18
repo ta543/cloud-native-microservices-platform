@@ -1,0 +1,4 @@
+apiVersion: v2
+name: todo-service
+description: A Helm chart for Kubernetes deployment of the Todo Service
+version: 0.1.0

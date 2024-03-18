@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: yourusername/user-service
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false

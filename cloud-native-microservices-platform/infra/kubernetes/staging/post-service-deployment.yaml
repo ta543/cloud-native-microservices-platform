@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service
+  labels:
+    app: post-service
+spec:
+  replicas: 2  # Scaled down from production for staging
+  selector:
+    matchLabels:
+      app: post-service
+  template:
+    metadata:
+      labels:
+        app: post-service
+    spec:
+      containers:
+      - name: post-service
+        image: yourusername/post-service:latest
+        ports:
+        - containerPort: 8080
+        resources:  # Resource limits can be adjusted if needed
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "250m"
+            memory: "400Mi"
+        livenessProbe:  # Adjust according to service spec
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          timeoutSeconds: 2
+        readinessProbe:  # Adjust according to service spec
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2

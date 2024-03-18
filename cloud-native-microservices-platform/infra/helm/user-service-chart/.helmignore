@@ -1,0 +1,7 @@
+# Various IDEs
+.idea/
+*.swp
+*.backup
+
+# Various OSs
+.DS_Store

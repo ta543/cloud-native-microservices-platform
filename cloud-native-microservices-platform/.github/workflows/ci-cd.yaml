@@ -1,0 +1,45 @@
+name: CI/CD Pipeline for User Service
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'microservices/user-service/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'microservices/user-service/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./microservices/user-service
+        file: ./microservices/user-service/Dockerfile
+        push: true
+        tags: ta543/user-service:latest
+    - name: Run tests
+      run: |
+        echo "Running tests for user-service"
+        # Add commands to run your tests here, e.g., npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Kubeconfig
+      uses: azure/setup-kubectl@v1
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f infra/kubernetes/dev/user-service-deployment.yaml
+        kubectl apply -f infra/kubernetes/dev/user-service-service.yaml
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
