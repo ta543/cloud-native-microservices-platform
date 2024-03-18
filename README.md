@@ -29,7 +29,7 @@ git clone <repository-url>
 cd cloud-native-microservices-platform
 ```
 
-### Build and Push Docker Images 🐳
+# Build and Push Docker Images 🐳
 
 > **Optional**: This step is optional if you're using pre-built images.
 
